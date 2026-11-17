@@ -1,132 +1,545 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Gym Management System API
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+REST API untuk mengelola anggota gym, pelatih, paket keanggotaan, langganan, jadwal latihan, dan peserta sesi latihan.
 
-## Description
+Project ini dibangun menggunakan **NestJS, TypeScript, Prisma, dan PostgreSQL**.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 1. Teknologi yang Digunakan
 
-## Project setup
+- **NestJS** — Framework backend berbasis Node.js.
+- **TypeScript** — Bahasa pemrograman yang digunakan.
+- **Prisma ORM** — Menghubungkan aplikasi dengan database.
+- **PostgreSQL** — Database untuk menyimpan data.
+- **Docker** — Menjalankan PostgreSQL dalam container.
+- **Thunder Client** — Menguji REST API melalui VS Code.
 
-```bash
-$ npm install
-```
+## 2. Cara Menjalankan Project
 
-## Compile and run the project
+### Prasyarat
+
+Pastikan sudah menginstal:
+
+- Node.js dan npm yang kompatibel
+- Docker Desktop
+- Git
+- Visual Studio Code
+
+### Clone Repository
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/AdamMulabib/UTS_Framework.git
+cd UTS_Framework
 ```
 
-## Run tests
+### Install Dependency
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm ci
 ```
 
-## Deployment
+### Konfigurasi Database
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Buat file `.env` pada folder utama project.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```env
+DATABASE_URL="postgresql://gym_admin:gym_password123@localhost:5432/gym_management?schema=public"
+```
+
+Konfigurasi tersebut digunakan untuk database PostgreSQL lokal sesuai konfigurasi Docker project.
+
+**Catatan:** File `.env` tidak boleh diunggah ke GitHub karena berisi informasi koneksi database.
+
+### Jalankan PostgreSQL
+
+Pastikan Docker Desktop aktif, kemudian jalankan:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker compose up -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Observability
-
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
-
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
-
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
-
-To add it to this project, run this and approve the code it prints at [observe.nestjs.com/link](https://observe.nestjs.com/link) - signing up for free if you have no account:
+### Generate Prisma Client
 
 ```bash
-$ npx @nestjs/observe link
+npx prisma generate
 ```
 
-It installs `@nestjs/observe`, wires it into `AppModule` and `main.ts`, and writes the app key and secret into `.env`, which every `nest start` script (`start`, `start:dev`, `start:debug`) then loads. In production, set `OBSERVE_APP_KEY` and `OBSERVE_APP_SECRET` in the environment instead.
-
-Or do it by hand:
+### Jalankan Migrasi Database
 
 ```bash
-$ npm install @nestjs/observe
+npx prisma migrate deploy
 ```
 
-Then follow the [setup guide](https://docs.nestjs.com/observability/sdk) - it takes a single import and an app key.
+### Jalankan Server NestJS
 
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
+```bash
+npm run start:dev
+```
 
-## Resources
+Jika berhasil, terminal akan menampilkan:
 
-Check out a few resources that may come in handy when working with NestJS:
+```text
+Nest application successfully started
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Base URL API:
 
-## Support
+```text
+http://localhost:3000
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 3. Modul Aplikasi
 
-## Stay in touch
+Gym Management System memiliki enam modul utama.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+| No | Modul | Fungsi |
+|---|---|---|
+| 1 | Members | Mengelola data anggota gym |
+| 2 | Trainers | Mengelola data pelatih gym |
+| 3 | Membership Plans | Mengelola paket keanggotaan |
+| 4 | Memberships | Mengelola langganan anggota |
+| 5 | Training Sessions | Mengelola jadwal latihan |
+| 6 | Session Participants | Mengelola peserta sesi latihan |
 
-## License
+Setiap modul memiliki operasi CRUD, yaitu Create, Read, Update, dan Delete.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 4. Struktur Database
+
+Database didefinisikan dalam file `prisma/schema.prisma`.
+
+### Relasi Database
+
+```text
+Member
+  |
+  |--- Membership --- MembershipPlan
+  |
+  |--- SessionParticipant --- TrainingSession --- Trainer
+```
+
+Penjelasan relasi:
+
+- Satu Member dapat memiliki beberapa Membership.
+- Satu MembershipPlan dapat digunakan oleh beberapa Membership.
+- Satu Trainer dapat memimpin beberapa TrainingSession.
+- Satu TrainingSession dapat memiliki beberapa SessionParticipant.
+- Satu Member dapat mengikuti beberapa TrainingSession.
+
+Kombinasi `sessionId` dan `memberId` pada SessionParticipant bersifat unik.
+
+### Tabel Member
+
+| Field | Tipe Data | Keterangan |
+|---|---|---|
+| id | Int | Primary key, memiliki nilai default |
+| fullName | String | Nama lengkap anggota |
+| email | String | Email unik anggota |
+| phoneNumber | String | Nomor telepon |
+| gender | String | Jenis kelamin |
+| dateOfBirth | DateTime | Tanggal lahir |
+| address | String? | Alamat, opsional |
+| isActive | Boolean | Status keaktifan |
+
+### Tabel Trainer
+
+| Field | Tipe Data | Keterangan |
+|---|---|---|
+| id | Int | Primary key |
+| fullName | String | Nama pelatih |
+| email | String | Email unik pelatih |
+| phoneNumber | String | Nomor telepon |
+| specialization | String | Spesialisasi pelatih |
+| experienceYears | Int | Lama pengalaman |
+| isActive | Boolean | Status keaktifan |
+
+### Tabel MembershipPlan
+
+| Field | Tipe Data | Keterangan |
+|---|---|---|
+| id | Int | Primary key |
+| name | String | Nama paket |
+| description | String? | Deskripsi paket |
+| price | Float | Harga paket |
+| durationDays | Int | Durasi dalam hari |
+| isActive | Boolean | Status paket |
+
+### Tabel Membership
+
+| Field | Tipe Data | Keterangan |
+|---|---|---|
+| id | Int | Primary key |
+| memberId | Int | ID anggota |
+| planId | Int | ID paket |
+| startDate | DateTime | Tanggal mulai |
+| endDate | DateTime | Tanggal berakhir |
+| status | String | Status membership |
+
+### Tabel TrainingSession
+
+| Field | Tipe Data | Keterangan |
+|---|---|---|
+| id | Int | Primary key |
+| trainerId | Int | ID pelatih |
+| sessionName | String | Nama sesi |
+| description | String? | Deskripsi sesi |
+| sessionDate | DateTime | Tanggal latihan |
+| startTime | String | Jam mulai |
+| endTime | String | Jam selesai |
+| capacity | Int | Kapasitas peserta |
+| status | String | Status sesi |
+
+### Tabel SessionParticipant
+
+| Field | Tipe Data | Keterangan |
+|---|---|---|
+| id | Int | Primary key |
+| sessionId | Int | ID sesi latihan |
+| memberId | Int | ID anggota |
+| registrationDate | DateTime | Tanggal pendaftaran |
+| registrationStatus | String | Status pendaftaran |
+
+## 5. API Endpoints
+
+Base URL:
+
+```text
+http://localhost:3000
+```
+
+### A. Members
+
+Digunakan untuk mengelola data anggota gym.
+
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| POST | /members | Menambahkan anggota |
+| GET | /members | Menampilkan semua anggota |
+| GET | /members/:id | Menampilkan anggota berdasarkan ID |
+| PATCH | /members/:id | Memperbarui data anggota |
+| DELETE | /members/:id | Menghapus anggota |
+
+Contoh request:
+
+**POST /members**
+
+```json
+{
+  "fullName": "Andi Saputra",
+  "email": "andi@example.com",
+  "phoneNumber": "081234567890",
+  "gender": "male",
+  "dateOfBirth": "2003-04-15",
+  "address": "Medan"
+}
+```
+
+### B. Trainers
+
+Digunakan untuk mengelola data pelatih gym.
+
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| POST | /trainers | Menambahkan pelatih |
+| GET | /trainers | Menampilkan semua pelatih |
+| GET | /trainers/:id | Menampilkan pelatih berdasarkan ID |
+| PATCH | /trainers/:id | Memperbarui data pelatih |
+| DELETE | /trainers/:id | Menghapus pelatih |
+
+Contoh request:
+
+**POST /trainers**
+
+```json
+{
+  "fullName": "Budi Hartono",
+  "email": "budi@example.com",
+  "phoneNumber": "081234567899",
+  "specialization": "Strength Training",
+  "experienceYears": 5
+}
+```
+
+### C. Membership Plans
+
+Digunakan untuk mengelola jenis paket keanggotaan gym.
+
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| POST | /membership-plans | Menambahkan paket |
+| GET | /membership-plans | Menampilkan semua paket |
+| GET | /membership-plans/:id | Menampilkan paket berdasarkan ID |
+| PATCH | /membership-plans/:id | Memperbarui paket |
+| DELETE | /membership-plans/:id | Menghapus paket |
+
+Contoh request:
+
+**POST /membership-plans**
+
+```json
+{
+  "name": "Gold Membership",
+  "description": "Akses gym selama 30 hari",
+  "price": 350000,
+  "durationDays": 30
+}
+```
+
+### D. Memberships
+
+Digunakan untuk mengelola langganan keanggotaan gym.
+
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| POST | /memberships | Menambahkan membership |
+| GET | /memberships | Menampilkan semua membership |
+| GET | /memberships/:id | Menampilkan membership berdasarkan ID |
+| PATCH | /memberships/:id | Memperbarui membership |
+| DELETE | /memberships/:id | Menghapus membership |
+
+Contoh request:
+
+**POST /memberships**
+
+```json
+{
+  "memberId": 1,
+  "planId": 1,
+  "startDate": "2026-11-17"
+}
+```
+
+`memberId` dan `planId` harus mengacu pada data anggota dan paket yang sudah tersimpan.
+
+### E. Training Sessions
+
+Digunakan untuk mengelola jadwal dan sesi latihan.
+
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| POST | /training-sessions | Menambahkan sesi latihan |
+| GET | /training-sessions | Menampilkan semua sesi |
+| GET | /training-sessions/:id | Menampilkan sesi berdasarkan ID |
+| PATCH | /training-sessions/:id | Memperbarui sesi latihan |
+| DELETE | /training-sessions/:id | Menghapus sesi latihan |
+
+Contoh request:
+
+**POST /training-sessions**
+
+```json
+{
+  "trainerId": 1,
+  "sessionName": "Morning Yoga",
+  "description": "Sesi yoga pemula",
+  "sessionDate": "2026-11-20",
+  "startTime": "08:00",
+  "endTime": "09:00",
+  "capacity": 15
+}
+```
+
+`trainerId` harus mengacu pada pelatih yang sudah terdaftar.
+
+### F. Session Participants
+
+Digunakan untuk mengelola anggota yang mendaftar ke sesi latihan.
+
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| POST | /session-participants | Menambahkan peserta |
+| GET | /session-participants | Menampilkan semua peserta |
+| GET | /session-participants/:id | Menampilkan peserta berdasarkan ID |
+| PATCH | /session-participants/:id | Memperbarui peserta |
+| DELETE | /session-participants/:id | Menghapus peserta |
+
+Contoh request:
+
+**POST /session-participants**
+
+```json
+{
+  "sessionId": 1,
+  "memberId": 1,
+  "registrationDate": "2026-11-17"
+}
+```
+
+`sessionId` dan `memberId` harus mengacu pada data yang sudah tersimpan.
+
+## 6. Pengujian API Menggunakan Thunder Client
+
+Pengujian API dapat dilakukan menggunakan ekstensi Thunder Client di Visual Studio Code.
+
+### Langkah Pengujian
+
+1. Jalankan PostgreSQL dan server NestJS.
+2. Buka Thunder Client di VS Code.
+3. Pilih New Request.
+4. Pilih metode HTTP.
+5. Masukkan URL endpoint.
+6. Untuk POST atau PATCH, pilih Body → JSON.
+7. Masukkan data yang sesuai.
+8. Klik Send.
+9. Periksa status HTTP dan respons JSON.
+
+### Metode HTTP
+
+| Method | Fungsi |
+|---|---|
+| GET | Mengambil data |
+| POST | Menambahkan data baru |
+| PATCH | Mengubah data |
+| DELETE | Menghapus data |
+
+### Contoh Pengujian
+
+**GET semua anggota**
+
+```http
+GET http://localhost:3000/members
+```
+
+**POST menambahkan anggota**
+
+```http
+POST http://localhost:3000/members
+```
+
+**GET berdasarkan ID**
+
+```http
+GET http://localhost:3000/members/1
+```
+
+**PATCH memperbarui anggota**
+
+```http
+PATCH http://localhost:3000/members/1
+```
+
+Contoh Body:
+
+```json
+{
+  "fullName": "Andi Saputra Updated"
+}
+```
+
+**DELETE anggota**
+
+```http
+DELETE http://localhost:3000/members/1
+```
+
+ID pada contoh harus disesuaikan dengan ID data sebenarnya.
+
+## 7. Struktur Folder Project
+
+```text
+UTS_Framework/
+├── prisma/
+│   ├── schema.prisma
+│   └── migrations/
+├── src/
+│   ├── members/
+│   ├── trainers/
+│   ├── membership-plans/
+│   ├── memberships/
+│   ├── training-sessions/
+│   ├── session-participants/
+│   ├── prisma/
+│   ├── app.module.ts
+│   └── main.ts
+├── test/
+├── docker-compose.yml
+├── package.json
+├── prisma.config.ts
+└── README.md
+```
+
+### Penjelasan File
+
+**main.ts**
+
+Merupakan file utama yang digunakan untuk menjalankan aplikasi NestJS.
+
+**app.module.ts**
+
+Digunakan untuk menggabungkan modul-modul aplikasi.
+
+**controller.ts**
+
+Bertugas menerima request HTTP dari pengguna dan meneruskannya ke service.
+
+**service.ts**
+
+Berisi logika aplikasi dan proses pengolahan data melalui Prisma.
+
+**dto.ts**
+
+Digunakan untuk menentukan struktur serta validasi data yang diterima aplikasi.
+
+**module.ts**
+
+Digunakan untuk mendaftarkan controller dan service dalam satu modul.
+
+**schema.prisma**
+
+Berisi model database, tipe data, serta relasi antar tabel.
+
+## 8. Status Implementasi dan Pengujian
+
+Berdasarkan log pengujian tanggal 17 November 2026:
+
+| Komponen | Status |
+|---|---|
+| Kompilasi TypeScript | Berhasil, 0 error |
+| Inisialisasi modul NestJS | Berhasil |
+| Pendaftaran 30 route API | Berhasil |
+| Generate Prisma Client | Berhasil |
+| Koneksi PostgreSQL | Belum berhasil |
+| Startup aplikasi secara penuh | Belum berhasil |
+| Pengujian CRUD melalui HTTP | Belum terverifikasi |
+
+Aplikasi telah berhasil mengompilasi kode dan mendaftarkan seluruh route API.
+
+Namun, saat dijalankan, Prisma mengalami error:
+
+```text
+PrismaClientInitializationError:
+Can't reach database server at localhost:5432
+
+Error Code: P1001
+```
+
+Hal tersebut menunjukkan database PostgreSQL belum dapat dijangkau.
+
+Dengan demikian, endpoint API telah terdaftar pada aplikasi, tetapi belum seluruhnya berhasil diuji melalui Thunder Client.
+
+## 9. Git dan GitHub
+
+Repository:
+
+https://github.com/AdamMulabib/UTS_Framework
+
+Contoh perintah untuk mengirim perubahan melalui branch sendiri:
+
+```bash
+git switch komentar-inays
+git status
+git add README.md
+git commit -m "Menambahkan dokumentasi README Gym Management API"
+git push origin komentar-inays
+```
+
+Perubahan pada branch dapat diajukan melalui Pull Request agar dapat diperiksa dan digabungkan ke branch `main`.
+
+## 10. Kesimpulan
+
+Gym Management System merupakan aplikasi backend berbasis REST API yang dikembangkan menggunakan NestJS, TypeScript, Prisma ORM, dan PostgreSQL.
+
+Aplikasi ini menyediakan enam modul utama untuk pengelolaan anggota, pelatih, paket keanggotaan, langganan, sesi latihan, serta peserta sesi latihan.
+
+Masing-masing modul memiliki lima endpoint untuk mendukung operasi CRUD.
+
+Berdasarkan log aplikasi, seluruh 30 endpoint telah berhasil didaftarkan oleh NestJS. Pengujian fungsional endpoint masih memerlukan database PostgreSQL yang dapat diakses agar proses penyimpanan, pengambilan, perubahan, dan penghapusan data dapat diverifikasi.
