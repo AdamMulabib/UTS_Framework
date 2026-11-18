@@ -543,3 +543,19 @@ Aplikasi ini menyediakan enam modul utama untuk pengelolaan anggota, pelatih, pa
 Masing-masing modul memiliki lima endpoint untuk mendukung operasi CRUD.
 
 Berdasarkan log aplikasi, seluruh 30 endpoint telah berhasil didaftarkan oleh NestJS. Pengujian fungsional endpoint masih memerlukan database PostgreSQL yang dapat diakses agar proses penyimpanan, pengambilan, perubahan, dan penghapusan data dapat diverifikasi.
+
+## 11. Panduan Pengujian Endpoint
+
+Sebelum melakukan pengujian API, pastikan server NestJS dan database PostgreSQL sudah berjalan.
+
+Urutan pengujian yang disarankan:
+
+1. GET untuk menampilkan seluruh data.
+2. POST untuk menambahkan data baru.
+3. GET berdasarkan ID untuk memeriksa data.
+4. PATCH untuk memperbarui data.
+5. DELETE untuk menghapus data.
+
+Pengujian dapat dilakukan menggunakan Thunder Client pada Visual Studio Code.
+
+Catatan: Pengujian CRUD membutuhkan koneksi database PostgreSQL yang aktif.
